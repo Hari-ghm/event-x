@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
+  const router = useRouter();
   const [isSignup, setIsSignup] = useState(false);
   const [signinData, setSigninData] = useState({ username: "", password: "" });
   const [signupData, setSignupData] = useState({
@@ -38,8 +40,11 @@ export default function AuthPage() {
       if (response.ok) {
         alert(`✅ Signed in successfully as ${signinData.username}`);
         console.log("User:", data);
+        
         // Optionally store token or user info:
-        // localStorage.setItem("token", data.token);
+       // localStorage.setItem("token", data.token);
+
+        router.push(`/home?username=${signinData.username}`);
       } else {
         alert(`❌ ${data.message || "Invalid credentials"}`);
       }
@@ -84,7 +89,7 @@ export default function AuthPage() {
         alert(`✅ Signed in successfully as ${data.username}`);
         console.log("User:", data);
         // Optionally store token or user info:
-        // localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
       } else {
         alert(`❌ ${data.message || "Invalid credentials"}`);
       }
