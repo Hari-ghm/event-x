@@ -4,7 +4,10 @@ const eventSchema = new mongoose.Schema({
   name: String,
   category: String,
   poster: String,
-  datetime: Date,
+  startDate: String,
+  endDate: String,
+  startTime: String,
+  endTime: String,
   venue: String,
   max_team_size: Number,
   organisers: String,
@@ -14,8 +17,11 @@ const eventSchema = new mongoose.Schema({
   last_date_to_apply: Date,
   prize_pool: mongoose.Schema.Types.Mixed, // can be total or places-wise object
   about: String,
-  interested: { type: [String], default: [] }, // list of usernames interested
+  favourite: { type: [String], default: [] }, // list of usernames interested
+  createdBy: String
 });
+
+
 
 const Event = mongoose.model("Event", eventSchema);
 export default Event;

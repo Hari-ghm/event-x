@@ -3,7 +3,7 @@
 import Navbar from "@/app/navbar/navbar";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
 
 export default function Contact() {
   const [message, setMessage] = useState("");
@@ -20,17 +20,23 @@ export default function Contact() {
     setMessage("");
   };
 
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-10">
-        <Navbar username={username} />
+      <Navbar username={username} />
       <div className="max-w-6xl w-full flex flex-col md:flex-row gap-12">
         {/* Left Side */}
         <div className="md:w-1/2 flex flex-col gap-6">
           <h1 className="text-4xl font-bold mb-2">Contact Me</h1>
           <p className="text-gray-300 leading-relaxed">
-            Hi! I’m always open to feedback, suggestions, or just a friendly
-            chat about tech and projects. Whether you have ideas for improvement
-            or collaboration opportunities, feel free to drop a message.
+            Hi! I’m HariMadhav G, a second-year engineering student from Chennai
+            with a strong passion for building creative and efficient digital
+            solutions. I’m a Full Stack Developer who enjoys working on both
+            frontend and backend technologies, turning ideas into functional and
+            user-friendly products. Alongside web development, I’m deeply
+            interested in Artificial Intelligence and Machine Learning, and I
+            love exploring how AI can be integrated into real-world applications
+            to make technology smarter and more impactful.
           </p>
 
           {/* Social Links */}
@@ -58,6 +64,14 @@ export default function Contact() {
               className="hover:text-blue-500 transition"
             >
               <FaLinkedin />
+            </a>
+            <a
+                href="https://hari-ghm.github.io/my-portfolio/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-green-500 transition"
+              >
+                <FaGlobe />
             </a>
           </div>
         </div>
