@@ -59,4 +59,7 @@ router.get("/getEvent/:eventId", async (req, res) => {
   }
 });
 
+
+
+
 export default router;

@@ -21,13 +21,13 @@ export default function CreateEventPage() {
   const [startTime, setStartTime] = useState("");
   const [endDate, setEndDate] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [organisor, setOrganisor] = useState("");
+  const [organiser, setOrganisor] = useState("");
   const [fee, setFee] = useState<number | "">("");
   const [feeType, setFeeType] = useState("perHead");
   const [maxTeamSize, setMaxTeamSize] = useState<number | "">("");
   const [website, setWebsite] = useState("");
   const [totalSeats, setTotalSeats] = useState<number | "">("");
-  const [lastDate, setLastDate] = useState("");
+  const [lastDateToApply, setLastDate] = useState("");
   const [prizePool, setPrizePool] = useState("");
   const [about, setAbout] = useState("");
 
@@ -66,19 +66,19 @@ export default function CreateEventPage() {
         startTime,
         endDate,
         endTime,
-        organisor,
+        organiser,
         fee,
         feeType,
         maxTeamSize,
         website,
         totalSeats,
-        lastDate,
+        lastDateToApply,
         prizePool,
         about,
         poster: uploadedImageUrl || null,
         username,
       };
-      console.log(username)
+
 
       const res = await fetch("http://localhost:5000/api/events/createEvent", {
         method: "POST",
@@ -240,7 +240,7 @@ export default function CreateEventPage() {
             <span className="text-purple-400 font-semibold">Organisers:</span>{" "}
             <input
               type="text"
-              value={organisor}
+              value={organiser}
               onChange={(e) => setOrganisor(e.target.value)}
               placeholder="Enter names..."
               className="bg-transparent border-b border-gray-600 focus:outline-none ml-2 w-2/3"
@@ -319,7 +319,7 @@ export default function CreateEventPage() {
             </span>{" "}
             <input
               type="date"
-              value={lastDate}
+              value={lastDateToApply}
               onChange={(e) => setLastDate(e.target.value)}
               className="bg-transparent border-b border-gray-600 focus:outline-none ml-2"
             />

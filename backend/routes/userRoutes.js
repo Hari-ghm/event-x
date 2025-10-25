@@ -79,5 +79,74 @@ router.put("/:username", async (req, res) => {
   }
 });
 
+router.post("/addInterested", async (req, res) => {
+  try {
+    const { username, eventId } = req.body;
+
+    if (!username || !eventId) {
+      return res
+        .status(400)
+        .json({ error: "Username and eventId are required" });
+    }
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+    console.log("QR")
+    // Check if already interested
+    if (user.interested.includes(eventId)) {
+      return res
+        .status(200)
+        .json({ message: "Event already added to interested list" });
+    }
+
+    // Add eventId to interested list
+    user.interested.push(eventId);
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "Event added to interested list successfully!" });
+  } catch (err) {
+    console.error("Error adding interested event:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.post("/removeInterested", async (req, res) => {
+  try {
+    const { username, eventId } = req.body;
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.interested = user.interested.filter((id) => id.toString() !== eventId);
+    await user.save();
+
+    res.status(200).json({ message: "Event removed from interested list" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Get user's interested events
+router.get("/getInterested/:username", async (req,res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ interested: user.interested });
+  } catch (error) {
+    console.error("Error fetching interested events:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 export default router;

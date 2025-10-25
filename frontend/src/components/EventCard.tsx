@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import { motion } from "framer-motion";
 
 interface EventCardProps {
@@ -8,8 +8,10 @@ interface EventCardProps {
   fee: string;
   startDate: string;
   poster: string;
-  id: string | " ";
-  createdBy: string,
+  id: string;
+  createdBy: string;
+  username: string;
+  liked: boolean; // <-- added prop from parent
 }
 
 export default function EventCard({
@@ -19,10 +21,13 @@ export default function EventCard({
   startDate,
   poster,
   id,
-  createdBy
-}: EventCardProps) {
+  createdBy,
+  username,
+  liked,
+}: EventCardProps): JSX.Element {
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isLiked, setIsLiked] = useState(liked); // initialize from prop
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -31,14 +36,47 @@ export default function EventCard({
     setMousePos({ x, y });
   };
 
+  async function handleLikeClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+
+    const endpoint = isLiked
+      ? "http://localhost:5000/api/users/removeInterested"
+      : "http://localhost:5000/api/users/addInterested";
+
+    // Optimistically update UI first
+    setIsLiked((prev) => !prev);
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username,
+          eventId: id,
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Failed to update interested list");
+      }
+
+      console.log(
+        isLiked
+          ? "Event removed from interested list"
+          : "Event added to interested list"
+      );
+    } catch (err) {
+      console.error("Error updating interested event:", err);
+      // revert if failed
+      setIsLiked((prev) => !prev);
+    }
+  }
+
   function viewEventDetails(event: React.MouseEvent<HTMLButtonElement>): void {
     event.stopPropagation();
     event.preventDefault();
-
     const url = `/event/${id}/${createdBy}`;
-
-    // Prefer client-side navigation when available; fall back to full navigation.
-    // If you're using Next.js App Router, consider replacing this with `useRouter().push(url)`.
     if (typeof window !== "undefined") {
       window.location.href = url;
     }
@@ -58,10 +96,26 @@ export default function EventCard({
       }}
       transition={{ type: "spring", stiffness: 100, damping: 10 }}
     >
-      {/* Glowing overlay */}
       {hovered && (
         <div className="absolute inset-0 rounded-2xl shadow-[0_0_20px_rgba(128,90,230,0.6)] pointer-events-none"></div>
       )}
+
+      {/* Like button (top right) */}
+      <button
+        onClick={handleLikeClick}
+        className="absolute top-2 right-2 text-2xl"
+      >
+        <motion.span
+          animate={{ scale: isLiked ? 1.3 : 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          style={{
+            color: isLiked ? "red" : "white",
+            transition: "color 0.3s",
+          }}
+        >
+          ♥
+        </motion.span>
+      </button>
 
       {/* Poster */}
       <img
@@ -80,8 +134,10 @@ export default function EventCard({
             {new Date(startDate).toDateString()}
           </p>
         </div>
-        <button onClick={viewEventDetails}
-        className="bg-purple-600 hover:bg-purple-700 text-white text-sm py-1 px-3 rounded-lg mt-2 self-start">
+        <button
+          onClick={viewEventDetails}
+          className="bg-purple-600 hover:bg-purple-700 text-white text-sm py-1 px-3 rounded-lg mt-2 self-start"
+        >
           View Details
         </button>
       </div>

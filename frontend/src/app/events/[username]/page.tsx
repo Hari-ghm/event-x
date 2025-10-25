@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Navbar from "@/app/navbar/navbar";
-import EventCard from "@/components/EventCard"; // make sure the path is correct
+import EventCard from "@/components/EventCard";
 
 interface Event {
   _id: string;
@@ -11,7 +11,7 @@ interface Event {
   startDate: string;
   fee: string;
   poster: string;
-  createdBy: string; // add this if your backend sends it
+  createdBy: string;
 }
 
 export default function Events() {
@@ -23,27 +23,48 @@ export default function Events() {
     : rawUsername ?? null;
 
   const [events, setEvents] = useState<Event[]>([]);
+  const [interestedEvents, setInterestedEvents] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/events/getEvents");
-        const data = await res.json();
-        setEvents(data);
+        // Fetch all events
+        const [eventsRes, interestedRes] = await Promise.all([
+          fetch("http://localhost:5000/api/events/getEvents"),
+          fetch(`http://localhost:5000/api/users/getInterested/${username}`),
+        ]);
+
+        const eventsData = await eventsRes.json();
+        const interestedData = await interestedRes.json();
+
+        setEvents(eventsData);
+        setInterestedEvents(interestedData.interested || []);
       } catch (error) {
         console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchEvents();
-  }, []);
+
+    if (username) fetchData();
+  }, [username]);
 
   const handleCreateEvent = () => {
     router.push(`/create-event/${username}`);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Loading events...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center px-6 py-16">
-      <Navbar username={username} />
+      <Navbar username={username ?? ""} />
       <h1 className="text-4xl font-bold text-purple-400 mb-8">
         Upcoming Events
       </h1>
@@ -51,18 +72,23 @@ export default function Events() {
       {/* Events Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl w-full mb-10">
         {events.length > 0 ? (
-          events.map((event) => (
-            <EventCard
-              key={event._id}
-              id={event._id}
-              name={event.name}
-              venue={event.venue}
-              fee={event.fee}
-              startDate={event.startDate}
-              poster={event.poster}
-              createdBy={event.createdBy} // ensure your backend provides this
-            />
-          ))
+          events.map((event) => {
+            const liked = interestedEvents.includes(event._id);
+            return (
+              <EventCard
+                key={event._id}
+                id={event._id}
+                name={event.name}
+                venue={event.venue}
+                fee={event.fee}
+                startDate={event.startDate}
+                poster={event.poster}
+                createdBy={event.createdBy}
+                username={username || ""}
+                liked={liked}
+              />
+            );
+          })
         ) : (
           <p className="text-gray-500 text-center col-span-full">
             No events found.

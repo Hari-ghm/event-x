@@ -12,13 +12,13 @@ interface Event {
   startTime: string;
   endDate: string;
   endTime: string;
-  organisor: string;
+  organiser: string;
   fee: string;
   feeType: string;
   maxTeamSize: string;
   website: string;
   totalSeats: string;
-  lastDate: string;
+  lastDateToApply: string;
   prizePool: string;
   about: string;
   poster: string;
@@ -153,7 +153,7 @@ export default function EventPage() {
           <p>
             🧑‍💼{" "}
             <span className="text-purple-400 font-semibold">Organisers:</span>{" "}
-            <span className="ml-2 text-white">{event.organisor}</span>
+            <span className="ml-2 text-white">{event.organiser}</span>
           </p>
 
           <p>
@@ -191,7 +191,7 @@ export default function EventPage() {
               Last Date to Apply:
             </span>{" "}
             <span className="ml-2 text-white">
-              {new Date(event.lastDate).toLocaleDateString()}
+              {new Date(event.lastDateToApply).toLocaleDateString()}
             </span>
           </p>
 
