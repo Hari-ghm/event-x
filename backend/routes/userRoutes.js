@@ -56,26 +56,28 @@ router.get("/:username", async (req, res) => {
   }
 });
 
-// update profiel details
+// update user profile
 router.put("/:username", async (req, res) => {
   const { username } = req.params;
-  const { phone, email, about, password } = req.body;
-
+  const { phone, email, password, about, sharePhone, shareEmail } = req.body;
+  
   try {
-    const updatedUser = await User.findOneAndUpdate(
-      { username },
-      { phone, email, about, password },
-      { new: true } 
-    );
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    // Update fields
+    if (phone !== undefined) user.phone = phone;
+    if (email !== undefined) user.email = email;
+    if (password !== undefined) user.password = password; // make sure to hash this if needed
+    if (about !== undefined) user.about = about;
+    if (sharePhone !== undefined) user.sharePhone = sharePhone;
+    if (shareEmail !== undefined) user.shareEmail = shareEmail;
 
-    res.json(updatedUser);
+    await user.save();
+    res.json(user);
+    
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update user" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 

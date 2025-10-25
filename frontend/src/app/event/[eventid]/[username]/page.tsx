@@ -35,6 +35,15 @@ interface Discussion {
   isTeamSearch: boolean;
 }
 
+interface UserData {
+  username: string;
+  phone: string;
+  email: string;
+  about: string;
+  sharePhone: boolean;
+  shareEmail: boolean;
+}
+
 export default function EventPage() {
   const params = useParams();
   const eventId = params.eventid as string;
@@ -44,12 +53,12 @@ export default function EventPage() {
   const [loading, setLoading] = useState(true);
   const [newDiscussion, setNewDiscussion] = useState("");
   const [isTeamSearch, setIsTeamSearch] = useState(false);
-  const [userAbout, setUserAbout] = useState("");
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/users/${username}`)
       .then((res) => res.json())
-      .then((data) => setUserAbout(data.about))
+      .then((data) => setUserData(data))
       .catch((err) => console.error("Error fetching user info:", err));
   }, [username]);
 
@@ -85,7 +94,7 @@ export default function EventPage() {
             username,
             message: newDiscussion,
             isTeamSearch,
-            about: isTeamSearch ? userAbout : "",
+            about: isTeamSearch ? userData?.about : "",
           }),
         }
       );
@@ -119,6 +128,27 @@ export default function EventPage() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // Function to get user contact info for display
+  const getUserContactInfo = (
+    discussionUsername: string,
+    discussionAbout?: string
+  ) => {
+    // For now, we only show contact info for the current user in their own team search posts
+    // You might want to fetch other users' data if needed
+    if (discussionUsername === username && userData) {
+      return {
+        about: discussionAbout || userData.about,
+        email: userData.shareEmail ? userData.email : null,
+        phone: userData.sharePhone ? userData.phone : null,
+      };
+    }
+    return {
+      about: discussionAbout,
+      email: null,
+      phone: null,
+    };
   };
 
   if (loading) {
@@ -306,7 +336,7 @@ export default function EventPage() {
         {isTeamSearch && (
           <div className="mt-3 bg-gray-800 p-3 rounded-lg text-gray-300 text-sm border border-gray-700">
             <span className="text-purple-400 font-semibold">Your About:</span>{" "}
-            {userAbout || "No about info provided."}
+            {userData?.about || "No about info provided."}
           </div>
         )}
 
@@ -327,41 +357,64 @@ export default function EventPage() {
             event.discussions
               .slice()
               .reverse()
-              .map((d) => (
-                <div
-                  key={d._id}
-                  className="bg-gray-900 border border-gray-700 rounded-lg p-4 mb-4"
-                >
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-semibold text-purple-300">
-                      {d.username}
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      {new Date(d.date).toLocaleString()}
-                    </span>
+              .map((d) => {
+                const contactInfo = getUserContactInfo(d.username, d.about);
+                return (
+                  <div
+                    key={d._id}
+                    className="bg-gray-900 border border-gray-700 rounded-lg p-4 mb-4"
+                  >
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-semibold text-purple-300">
+                        {d.username}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {new Date(d.date).toLocaleString()}
+                      </span>
+                    </div>
+
+                    <p className="text-gray-300">{d.message}</p>
+
+                    {d.isTeamSearch && (
+                      <div className="mt-3 space-y-2">
+                        {contactInfo.about && (
+                          <p className="text-sm text-gray-400">
+                            <span className="text-purple-400 font-semibold">
+                              About:
+                            </span>{" "}
+                            {contactInfo.about}
+                          </p>
+                        )}
+                        {contactInfo.email && (
+                          <p className="text-sm text-gray-400">
+                            <span className="text-purple-400 font-semibold">
+                              Email:
+                            </span>{" "}
+                            {contactInfo.email}
+                          </p>
+                        )}
+                        {contactInfo.phone && (
+                          <p className="text-sm text-gray-400">
+                            <span className="text-purple-400 font-semibold">
+                              Phone:
+                            </span>{" "}
+                            {contactInfo.phone}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {d.username === username && (
+                      <button
+                        onClick={() => handleDeleteDiscussion(d._id)}
+                        className="mt-2 text-red-500 text-sm hover:underline"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
-
-                  <p className="text-gray-300">{d.message}</p>
-
-                  {d.isTeamSearch && d.about && (
-                    <p className="text-sm text-gray-400 mt-2">
-                      <span className="text-purple-400 font-semibold">
-                        About:
-                      </span>{" "}
-                      {d.about}
-                    </p>
-                  )}
-
-                  {d.username === username && (
-                    <button
-                      onClick={() => handleDeleteDiscussion(d._id)}
-                      className="mt-2 text-red-500 text-sm hover:underline"
-                    >
-                      Delete
-                    </button>
-                  )}
-                </div>
-              ))
+                );
+              })
           ) : (
             <p className="text-gray-500">No discussions yet.</p>
           )}

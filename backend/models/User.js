@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   about: { type: String },
   interested: { type: [String], default: [] },
   viewCount: { type: Number, default: 0 },
+  sharePhone: { type: Boolean, default: false },
+  shareEmail: { type: Boolean, default: false },
 });
 
 

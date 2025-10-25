@@ -110,6 +110,43 @@ router.post("/deleteDiscussion", async (req, res) => {
   }
 });
 
+// Get events created by a specific user
+router.get("/getEventsByUser/:username", async (req, res) => {
+  const { username } = req.params;
+  
+  try {
+    const events = await Event.find({ createdBy: username });
+    res.json(events);
+  } catch (err) {
+    console.error("Error fetching user events:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
+// Delete an event
+router.delete("/deleteEvent/:eventId", async (req, res) => {
+  const { eventId } = req.params;
+  const { username } = req.body;
+  
+  try {
+    const event = await Event.findById(eventId);
+    
+    if (!event) {
+      return res.status(404).json({ error: "Event not found" });
+    }
+    
+    // Check if the user is the creator of the event
+    if (event.createdBy !== username) {
+      return res.status(403).json({ error: "Unauthorized to delete this event" });
+    }
+    
+    await Event.findByIdAndDelete(eventId);
+    res.json({ message: "Event deleted successfully" });
+    
+  } catch (err) {
+    console.error("Error deleting event:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 export default router;
