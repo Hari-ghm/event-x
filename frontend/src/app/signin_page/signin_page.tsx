@@ -34,15 +34,15 @@ export default function AuthPage() {
           password: signinData.password,
         }),
       });
-      
+
       const data = await response.json();
 
       if (response.ok) {
-        alert(`✅ Signed in successfully as ${signinData.username}`);
+        alert(` Signed in successfully as ${signinData.username}`);
         console.log("User:", data);
-        
+
         // Optionally store token or user info:
-       // localStorage.setItem("token", data.token);
+        // localStorage.setItem("token", data.token);
 
         router.push(`/home?username=${signinData.username}`);
       } else {
@@ -54,14 +54,17 @@ export default function AuthPage() {
     }
   };
 
-
   // Handle Sign Up
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log("Sign Up Data:", signupData);
 
-    if (!signupData.username || !signupData.password || !signupData.confirmPassword) {
+    if (
+      !signupData.username ||
+      !signupData.password ||
+      !signupData.confirmPassword
+    ) {
       alert("Please enter username, password, confirm password");
       return;
     }
@@ -99,19 +102,20 @@ export default function AuthPage() {
     }
   };
 
-
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
-      <div className="text-white text-6xl tracking-widest font-semibold pb-18">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
+      {/* Logo - Responsive sizing */}
+      <div className="text-white text-4xl md:text-5xl lg:text-6xl tracking-widest font-semibold pb-8 md:pb-12 lg:pb-18">
         EVENT X
       </div>
 
-      <div className="w-[380px] bg-zinc-900 rounded-2xl p-8 shadow-xl relative overflow-hidden mb-24">
+      {/* Auth Container - Responsive width and margins */}
+      <div className="w-full max-w-[380px] bg-zinc-900 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden mb-16 md:mb-20 lg:mb-24">
         {/* Tabs */}
         <div className="flex justify-between mb-6">
           <button
             onClick={() => setIsSignup(false)}
-            className={`w-1/2 py-2 text-center font-semibold transition-all ${
+            className={`w-1/2 py-2 text-center font-semibold transition-all text-sm md:text-base ${
               !isSignup
                 ? "border-b-2 border-blue-500 text-blue-400"
                 : "text-gray-400"
@@ -121,7 +125,7 @@ export default function AuthPage() {
           </button>
           <button
             onClick={() => setIsSignup(true)}
-            className={`w-1/2 py-2 text-center font-semibold transition-all ${
+            className={`w-1/2 py-2 text-center font-semibold transition-all text-sm md:text-base ${
               isSignup
                 ? "border-b-2 border-green-500 text-green-400"
                 : "text-gray-400"
@@ -131,8 +135,8 @@ export default function AuthPage() {
           </button>
         </div>
 
-        {/* Forms Container */}
-        <div className="relative w-full h-[220px]">
+        {/* Forms Container - Responsive height */}
+        <div className="relative w-full h-[200px] md:h-[220px]">
           {/* Sign In Form */}
           <form
             onSubmit={handleSignIn}
@@ -149,7 +153,7 @@ export default function AuthPage() {
               onChange={(e) =>
                 setSigninData({ ...signinData, username: e.target.value })
               }
-              className="w-full mb-4 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mb-3 md:mb-4 px-4 py-2 md:py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
               required
             />
             <input
@@ -159,12 +163,12 @@ export default function AuthPage() {
               onChange={(e) =>
                 setSigninData({ ...signinData, password: e.target.value })
               }
-              className="w-full mb-4 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mb-3 md:mb-4 px-4 py-2 md:py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base"
               required
             />
             <button
               type="submit"
-              className="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all"
+              className="w-full py-2 md:py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all text-sm md:text-base"
             >
               Sign In
             </button>
@@ -186,7 +190,7 @@ export default function AuthPage() {
               onChange={(e) =>
                 setSignupData({ ...signupData, username: e.target.value })
               }
-              className="w-full mb-4 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full mb-3 md:mb-4 px-4 py-2 md:py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base"
               required
             />
             <input
@@ -196,7 +200,7 @@ export default function AuthPage() {
               onChange={(e) =>
                 setSignupData({ ...signupData, password: e.target.value })
               }
-              className="w-full mb-4 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full mb-3 md:mb-4 px-4 py-2 md:py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base"
               required
             />
             <input
@@ -209,12 +213,12 @@ export default function AuthPage() {
                   confirmPassword: e.target.value,
                 })
               }
-              className="w-full mb-4 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full mb-3 md:mb-4 px-4 py-2 md:py-2 bg-zinc-800 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm md:text-base"
               required
             />
             <button
               type="submit"
-              className="w-full py-2 bg-green-500 hover:bg-green-700 rounded-lg font-semibold transition-all"
+              className="w-full py-2 md:py-2 bg-green-500 hover:bg-green-700 rounded-lg font-semibold transition-all text-sm md:text-base"
             >
               Sign Up
             </button>

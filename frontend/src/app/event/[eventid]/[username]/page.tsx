@@ -141,7 +141,7 @@ export default function EventPage() {
     <div className="min-h-screen bg-black text-white px-8 py-16 flex flex-col items-center">
       <Navbar username={username} />
 
-      <h1 className="text-5xl font-bold text-purple-400 mb-12 text-center">
+      <h1 className=" text-3xl md:text-5xl font-bold text-purple-400 mb-12 text-center py-6">
         EVENT DETAILS
       </h1>
 
@@ -270,10 +270,6 @@ export default function EventPage() {
               <p className="text-white">{event.about}</p>
             </div>
           </div>
-
-          <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300">
-            Register Now
-          </button>
         </div>
       </div>
 

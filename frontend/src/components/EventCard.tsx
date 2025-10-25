@@ -12,6 +12,7 @@ interface EventCardProps {
   createdBy: string;
   username: string;
   liked: boolean; // <-- added prop from parent
+  isOver: boolean; // <-- new prop for event over status
 }
 
 export default function EventCard({
@@ -24,6 +25,7 @@ export default function EventCard({
   createdBy,
   username,
   liked,
+  isOver,
 }: EventCardProps): JSX.Element {
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -100,10 +102,17 @@ export default function EventCard({
         <div className="absolute inset-0 rounded-2xl shadow-[0_0_20px_rgba(128,90,230,0.6)] pointer-events-none"></div>
       )}
 
+      {/* Event Expired Badge */}
+      {isOver && (
+        <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 text-xs rounded z-10">
+          Event Expired
+        </div>
+      )}
+
       {/* Like button (top right) */}
       <button
         onClick={handleLikeClick}
-        className="absolute top-2 right-2 text-2xl"
+        className="absolute top-2 right-2 text-2xl z-10"
       >
         <motion.span
           animate={{ scale: isLiked ? 1.3 : 1 }}

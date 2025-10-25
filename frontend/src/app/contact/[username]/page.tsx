@@ -54,7 +54,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-10">
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-10 mt-12">
       <Navbar username={username} />
       <div className="max-w-6xl w-full flex flex-col md:flex-row gap-12">
         {/* Left Side */}

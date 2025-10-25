@@ -11,7 +11,7 @@ export default function About() {
     : rawUsername ?? null;
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-16">
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-16 mt-4">
       <Navbar username={username} />
       <div className="max-w-4xl text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-bold text-purple-400 mb-4">
