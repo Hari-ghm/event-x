@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react"; // <-- useEffect imported from React
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "../../navbar/navbar";
 
@@ -19,36 +19,18 @@ export default function ProfilePage() {
     : rawUsername ?? null;
 
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (!username) return;
     // Fetch user data from backend
-    console.log("username:", username);
     fetch(`http://localhost:5000/api/users/${username}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch user data");
         return res.json();
       })
-      .then((data: UserData) => {
-        setUserData(data);
-        console.log(data);
-      })
+      .then((data: UserData) => setUserData(data))
       .catch((err) => console.error(err));
   }, [username]);
-
-  const handleChangePassword = () => {
-    const newPass = prompt("Enter new password:");
-    if (newPass && userData) {
-      setUserData({ ...userData, password: newPass });
-      // Send update to backend
-      fetch(`http://localhost:5000/api/users/${username}/password`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: newPass }),
-      }).catch((err) => console.error(err));
-    }
-  };
 
   const handleSaveChanges = async () => {
     if (!userData || !username) return;
@@ -79,11 +61,21 @@ export default function ProfilePage() {
     setUserData({ ...userData, about: value });
   };
 
+  const setPhone = (value: string) => {
+    if (!userData) return;
+    setUserData({ ...userData, phone: value });
+  };
+
+  const setPassword = (value: string) => {
+    if (!userData) return;
+    setUserData({ ...userData, password: value });
+  };
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center py-16 px-4">
       <Navbar username={username} />
 
-      <h1 className="text-5xl font-bold mb-10">MY PROFILE </h1>
+      <h1 className="text-5xl font-bold mb-10 pt-6">MY PROFILE </h1>
 
       <div className="w-full max-w-2xl p-8 rounded-xl shadow-lg flex flex-col gap-6">
         {/* Username */}
@@ -100,9 +92,7 @@ export default function ProfilePage() {
           <input
             type="text"
             value={userData?.phone || ""}
-            onChange={(e) =>
-              setUserData({ ...userData!, phone: e.target.value })
-            }
+            onChange={(e) => setPhone(e.target.value)}
             className="bg-gray-800 px-4 py-2 rounded text-purple-400 border border-purple-600 w-1/2 text-right"
           />
         </div>
@@ -121,29 +111,13 @@ export default function ProfilePage() {
         {/* Password */}
         <div className="flex justify-between items-center">
           <span className="text-purple-300 font-semibold">Password</span>
-          <div className="relative w-1/2 text-right">
-            <input
-              type={showPassword ? "text" : "password"}
-              value={userData?.password || ""}
-              readOnly
-              className="w-full bg-gray-800 px-4 py-2 rounded text-purple-400 border border-purple-600"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-purple-300 hover:text-purple-100"
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
-          </div>
+          <input
+            type="text"
+            value={userData?.password || ""}
+            onChange={(e) => setPassword(e.target.value)}
+            className="bg-gray-800 px-4 py-2 rounded text-purple-400 border border-purple-600 w-1/2 text-right"
+          />
         </div>
-
-        <button
-          onClick={handleChangePassword}
-          className="self-start bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded mt-2"
-        >
-          Change Password
-        </button>
 
         {/* About */}
         <div className="flex flex-col mt-4">

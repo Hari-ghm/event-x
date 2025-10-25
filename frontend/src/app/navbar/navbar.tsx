@@ -33,7 +33,7 @@ export default function Navbar({ username }: NavbarProps) {
           <a href={username ? `/contact/${username}` : "/contact"}>Contact</a>
         </li>
         <li>
-          <a href="/favourites">Favourites</a>
+          <a href={username ? `/favourite/${username}` : "/favourite"}>Favourites</a>
         </li>
         <li>
           <a

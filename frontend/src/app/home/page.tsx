@@ -17,7 +17,7 @@ export default function HomePage() {
         <Navbar username={username} />
 
         <h1 className="text-white text-7xl font-bold tracking-widest mb-6 pt-20">
-          EVENT X
+          EVENT-X
         </h1>
 
         {username && (
