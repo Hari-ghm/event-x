@@ -65,8 +65,8 @@ export default function Events() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center px-6 py-16">
       <Navbar username={username ?? ""} />
-      <h1 className="text-4xl font-bold text-purple-400 mb-8">
-        Upcoming Events
+      <h1 className="text-5xl font-bold text-purple-400 mb-8 pt-10">
+        EVENTS
       </h1>
 
       {/* Events Grid */}

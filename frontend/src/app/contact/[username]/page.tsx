@@ -7,19 +7,51 @@ import { FaInstagram, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
 
 export default function Contact() {
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const params = useParams();
-    const rawUsername = params.username;
-    const username: string | null = Array.isArray(rawUsername)
-      ? rawUsername[0]
-      : rawUsername ?? null;
+  const params = useParams();
+  const rawUsername = params.username;
+  const username: string | null = Array.isArray(rawUsername)
+    ? rawUsername[0]
+    : rawUsername ?? null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Message sent successfully!");
-    setMessage("");
-  };
+    if (!username) {
+      alert("Username not found!");
+      return;
+    }
 
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/feedback/userfeedback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            message,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        alert("Message sent successfully!");
+        setMessage("");
+      } else {
+        alert("Failed to send message.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-10">
@@ -27,7 +59,9 @@ export default function Contact() {
       <div className="max-w-6xl w-full flex flex-col md:flex-row gap-12">
         {/* Left Side */}
         <div className="md:w-1/2 flex flex-col gap-6">
-          <h1 className="text-4xl font-bold mb-2">Contact Me</h1>
+          <h1 className="text-4xl font-bold mb-2 text-purple-400">
+            Contact Me
+          </h1>
           <p className="text-gray-300 leading-relaxed">
             Hi! I’m HariMadhav G, a second-year engineering student from Chennai
             with a strong passion for building creative and efficient digital
@@ -66,12 +100,12 @@ export default function Contact() {
               <FaLinkedin />
             </a>
             <a
-                href="https://hari-ghm.github.io/my-portfolio/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-green-500 transition"
-              >
-                <FaGlobe />
+              href="https://hari-ghm.github.io/my-portfolio/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-green-500 transition"
+            >
+              <FaGlobe />
             </a>
           </div>
         </div>
@@ -89,9 +123,10 @@ export default function Contact() {
             ></textarea>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded-lg font-semibold transition"
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded-lg font-semibold transition disabled:opacity-50"
             >
-              Send
+              {loading ? "Sending..." : "Send"}
             </button>
           </form>
         </div>

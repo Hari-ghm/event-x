@@ -7,7 +7,7 @@ import path from "path"; // <-- Add this
 import { fileURLToPath } from "url"; // <-- Required for __dirname in ES modules
 import userRoutes from "./routes/userRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
-
+import userfeedbackRoutes from "./routes/userfeedbackRoutes.js";
 dotenv.config();
 
 // Fix __dirname in ES module
@@ -27,6 +27,7 @@ mongoose
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/feedback",userfeedbackRoutes)
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

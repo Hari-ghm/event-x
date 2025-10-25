@@ -21,6 +21,9 @@ export default function Navbar({ username }: NavbarProps) {
       </div>
       <ul className="flex gap-12 text-xl justify-between pl-24 pt-4">
         <li>
+          <a href={username ? `/home?username=${username}` : "/home"}>Home</a>
+        </li>
+        <li>
           <a href={username ? `/events/${username}` : "/events"}>Events</a>
         </li>
         <li>
