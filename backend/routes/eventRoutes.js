@@ -59,6 +59,56 @@ router.get("/getEvent/:eventId", async (req, res) => {
   }
 });
 
+// ✅ Add discussion to event
+router.post("/addDiscussion", async (req, res) => {
+  const { eventId, username, message, isTeamSearch, about } = req.body;
+
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) return res.status(404).json({ error: "Event not found" });
+
+    const newDiscussion = {
+      username,
+      message,
+      date: new Date(),
+      isTeamSearch,
+      about,
+    };
+
+    event.discussions.push(newDiscussion);
+    await event.save();
+
+    res.status(200).json(event);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add discussion" });
+  }
+});
+
+router.post("/deleteDiscussion", async (req, res) => {
+  const { eventId, discussionId, username } = req.body;
+
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) return res.status(404).json({ error: "Event not found" });
+
+    const discussion = event.discussions.id(discussionId);
+    if (!discussion)
+      return res.status(404).json({ error: "Discussion not found" });
+
+    // Only allow the same user to delete their discussion
+    if (discussion.username !== username)
+      return res.status(403).json({ error: "Not authorized to delete this" });
+
+    discussion.deleteOne();
+    await event.save();
+
+    res.status(200).json(event);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete discussion" });
+  }
+});
 
 
 

@@ -20,6 +20,16 @@ const eventSchema = new mongoose.Schema({
   about: String,
   favourite: { type: [String], default: [] }, // list of usernames interested
   createdBy: String,
+  discussions: [
+    {
+      _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+      username: String,
+      message: String,
+      date: { type: Date, default: Date.now },
+      isTeamSearch: { type: Boolean, default: false },
+      about: { type: String, default: "" },
+    },
+  ],
 });
 
 

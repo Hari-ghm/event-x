@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import Navbar from "./navbar/navbar"; 
 import AuthPage from "./signin_page/signin_page";
 
 export default function HomePage() {
