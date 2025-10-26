@@ -11,17 +11,23 @@ interface NavbarProps {
 export default function Navbar({ username }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Helper function to generate URLs with username
+  const getUrl = (path: string) => {
+    return username ? `${path}?username=${username}` : path;
+  };
+
   return (
     <nav className="bg-black text-white p-4 flex justify-between items-center h-[10vh] fixed top-0 left-0 w-full z-50">
       {/* Logo */}
-      <div className="font-bold ">
-        <Link href="/home?username=hxri">
+      <div className="font-bold">
+        <Link href={getUrl("/home")}>
           <Image
             src="/navbar-logo.png"
             alt="Brand Logo"
             className="h-16 md:h-20 w-auto cursor-pointer translate-y-4"
-            width={40} // Add appropriate width
-            height={40}
+            width={160} // Increased for better quality
+            height={80}
+            priority
           />
         </Link>
       </div>
@@ -29,52 +35,52 @@ export default function Navbar({ username }: NavbarProps) {
       {/* Desktop Navigation */}
       <ul className="hidden md:flex gap-8 lg:gap-12 text-lg lg:text-xl justify-between items-center">
         <li>
-          <a
-            href={username ? `/home?username=${username}` : "/home"}
+          <Link
+            href={getUrl("/home")}
             className="hover:text-blue-400 transition"
           >
             Home
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href={username ? `/events/${username}` : "/events"}
+          <Link
+            href={getUrl("/events")}
             className="hover:text-blue-400 transition"
           >
             Events
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href={username ? `/about/${username}` : "/about"}
+          <Link
+            href={getUrl("/about")}
             className="hover:text-blue-400 transition"
           >
             About
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href={username ? `/contact/${username}` : "/contact"}
+          <Link
+            href={getUrl("/contact")}
             className="hover:text-blue-400 transition"
           >
             Contact
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href={username ? `/favourite/${username}` : "/favourite"}
+          <Link
+            href={getUrl("/favourite")}
             className="hover:text-blue-400 transition"
           >
             Favourites
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href={username ? `/profile/${username}` : "/profile"}
-            className="flex items-center space-x-1 hover:text-blue-400 transition md:size-10"
+          <Link
+            href={getUrl("/profile")}
+            className="flex items-center space-x-1 hover:text-blue-400 transition"
           >
-            <FaUserCircle size={28} className="lg:size-32 " />
-          </a>
+            <FaUserCircle size={28} className="lg:size-8" />
+          </Link>
         </li>
       </ul>
 
@@ -82,6 +88,7 @@ export default function Navbar({ username }: NavbarProps) {
       <button
         className="md:hidden text-2xl z-60"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-label="Toggle menu"
       >
         {isMenuOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
       </button>
@@ -97,49 +104,49 @@ export default function Navbar({ username }: NavbarProps) {
             className="flex flex-col items-center justify-center h-full space-y-8 text-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <a
-              href={username ? `/home?username=${username}` : "/home"}
+            <Link
+              href={getUrl("/home")}
               className="hover:text-blue-400 transition py-2"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
-            </a>
-            <a
-              href={username ? `/events/${username}` : "/events"}
+            </Link>
+            <Link
+              href={getUrl("/events")}
               className="hover:text-blue-400 transition py-2"
               onClick={() => setIsMenuOpen(false)}
             >
               Events
-            </a>
-            <a
-              href={username ? `/about/${username}` : "/about"}
+            </Link>
+            <Link
+              href={getUrl("/about")}
               className="hover:text-blue-400 transition py-2"
               onClick={() => setIsMenuOpen(false)}
             >
               About
-            </a>
-            <a
-              href={username ? `/contact/${username}` : "/contact"}
+            </Link>
+            <Link
+              href={getUrl("/contact")}
               className="hover:text-blue-400 transition py-2"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
-            </a>
-            <a
-              href={username ? `/favourite/${username}` : "/favourite"}
+            </Link>
+            <Link
+              href={getUrl("/favourite")}
               className="hover:text-blue-400 transition py-2"
               onClick={() => setIsMenuOpen(false)}
             >
               Favourites
-            </a>
-            <a
-              href={username ? `/profile/${username}` : "/profile"}
+            </Link>
+            <Link
+              href={getUrl("/profile")}
               className="flex items-center space-x-3 hover:text-blue-400 transition py-2"
               onClick={() => setIsMenuOpen(false)}
             >
               <FaUserCircle size={36} />
               <span>Profile</span>
-            </a>
+            </Link>
           </div>
         </div>
       )}
