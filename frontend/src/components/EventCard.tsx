@@ -42,8 +42,8 @@ export default function EventCard({
     e.stopPropagation();
 
     const endpoint = isLiked
-      ? "http://localhost:5000/api/users/removeInterested"
-      : "http://localhost:5000/api/users/addInterested";
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/removeInterested`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/addInterested`;
 
     // Optimistically update UI first
     setIsLiked((prev) => !prev);

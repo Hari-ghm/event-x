@@ -24,16 +24,19 @@ export default function AuthPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: signinData.username,
-          password: signinData.password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: signinData.username,
+            password: signinData.password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -75,7 +78,7 @@ export default function AuthPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/signup", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

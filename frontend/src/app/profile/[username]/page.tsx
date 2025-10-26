@@ -44,7 +44,7 @@ export default function ProfilePage() {
     const fetchData = async () => {
       try {
         const userRes = await fetch(
-          `http://localhost:5000/api/users/${username}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${username}`
         );
         if (!userRes.ok)
           throw new Error(`Failed to fetch user data: ${userRes.status}`);
@@ -53,14 +53,14 @@ export default function ProfilePage() {
         setUserData(userData);
 
         const eventsRes = await fetch(
-          `http://localhost:5000/api/events/getEventsByUser/${username}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/getEventsByUser/${username}`
         );
         if (eventsRes.ok) {
           const eventsData = await eventsRes.json();
           setUserEvents(eventsData);
         } else {
           const allEventsRes = await fetch(
-            `http://localhost:5000/api/events/getEvents`
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/getEvents`
           );
           if (allEventsRes.ok) {
             const allEvents = await allEventsRes.json();
@@ -84,11 +84,14 @@ export default function ProfilePage() {
   const handleSaveChanges = async () => {
     if (!userData || !username) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/users/${username}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${username}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to update user");
       const updated = await res.json();
@@ -105,7 +108,7 @@ export default function ProfilePage() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/events/deleteEvent/${eventId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/events/deleteEvent/${eventId}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },

@@ -26,7 +26,7 @@ export default function Contact() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/feedback/userfeedback",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/feedback/userfeedback`,
         {
           method: "POST",
           headers: {

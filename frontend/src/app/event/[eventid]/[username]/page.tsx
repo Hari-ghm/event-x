@@ -56,7 +56,7 @@ export default function EventPage() {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${username}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${username}`)
       .then((res) => res.json())
       .then((data) => setUserData(data))
       .catch((err) => console.error("Error fetching user info:", err));
@@ -66,7 +66,7 @@ export default function EventPage() {
     const fetchEventDetails = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/events/getEvent/${eventId}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/getEvent/${eventId}`
         );
         const data = await res.json();
         setEvent(data);
@@ -85,7 +85,7 @@ export default function EventPage() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/events/addDiscussion",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/addDiscussion`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -113,7 +113,7 @@ export default function EventPage() {
   const handleDeleteDiscussion = async (discussionId: string) => {
     try {
       const res = await fetch(
-        "http://localhost:5000/api/events/deleteDiscussion",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/deleteDiscussion`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

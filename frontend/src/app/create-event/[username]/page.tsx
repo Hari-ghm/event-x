@@ -48,7 +48,7 @@ export default function CreateEventPage() {
         const formData = new FormData();
         formData.append("poster", poster);
 
-        const uploadRes = await fetch("http://localhost:5000/uploadPoster", {
+        const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/uploadPoster`, {
           method: "POST",
           body: formData,
         });
@@ -80,7 +80,7 @@ export default function CreateEventPage() {
       };
 
 
-      const res = await fetch("http://localhost:5000/api/events/createEvent", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/createEvent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(eventData),

@@ -33,8 +33,10 @@ export default function Favorites() {
     const fetchData = async () => {
       try {
         const [eventsRes, interestedRes] = await Promise.all([
-          fetch("http://localhost:5000/api/events/getEvents"),
-          fetch(`http://localhost:5000/api/users/getInterested/${username}`),
+          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/getEvents`),
+          fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/getInterested/${username}`
+          ),
         ]);
 
         const eventsData = await eventsRes.json();
