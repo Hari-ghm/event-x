@@ -20,6 +20,8 @@ export default function Navbar({ username }: NavbarProps) {
             src="/navbar-logo.png"
             alt="Brand Logo"
             className="h-16 md:h-20 w-auto cursor-pointer translate-y-4"
+            width={40} // Add appropriate width
+            height={40}
           />
         </Link>
       </div>

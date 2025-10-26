@@ -186,6 +186,8 @@ export default function EventPage() {
                 src={event.poster}
                 alt="Event Poster"
                 className="object-cover w-full h-full"
+                width={300} // ✅ explicit width
+                height={400}
               />
             ) : (
               <p className="text-gray-500">No poster available</p>

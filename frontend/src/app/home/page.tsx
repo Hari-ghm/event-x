@@ -2,8 +2,10 @@
 import { useSearchParams } from "next/navigation";
 import Navbar from "../navbar/navbar";
 import AnimatedBackground from "@/components/AnimatedBackground"; // adjust path
+import { Suspense } from "react";
 
-export default function HomePage() {
+// Separate component that uses useSearchParams
+function HomeContent() {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
 
@@ -37,5 +39,23 @@ export default function HomePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function HomePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="relative min-h-screen pt-20 md:pt-0">
+          <AnimatedBackground />
+          <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+            <div className="text-white text-xl">Loading...</div>
+          </div>
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }

@@ -117,6 +117,8 @@ export default function CreateEventPage() {
                 src={posterURL}
                 alt="Event Poster"
                 className="object-cover w-full h-full"
+                width={300} // ✅ explicit width
+                height={400}
               />
             ) : (
               <p className="text-gray-500">No poster selected yet</p>

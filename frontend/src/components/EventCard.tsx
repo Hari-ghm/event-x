@@ -134,6 +134,8 @@ export default function EventCard({
         src={poster}
         alt={name}
         className="w-28 h-40 object-cover rounded-lg flex-shrink-0"
+        width={300}
+        height={250}
       />
 
       {/* Event details */}

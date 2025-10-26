@@ -288,7 +288,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <p className="text-gray-500 text-center text-lg">
-              You haven't created any events yet.
+              You haven&apos;t created any events yet.
             </p>
           )}
         </div>

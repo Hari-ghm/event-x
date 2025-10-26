@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import {useParams } from "next/navigation";
 import Navbar from "@/app/navbar/navbar";
 import EventCard from "@/components/EventCard";
 
