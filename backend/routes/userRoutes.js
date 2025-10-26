@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/signup", async (req, res) => {
   try {
     const { username, password} = req.body;
-    console.log("wef")
+    console.log(username,password)
 
     const existingUser = await User.findOne({ username });
   

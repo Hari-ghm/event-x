@@ -61,7 +61,7 @@ export default function AuthPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Sign Up Datwswa:", signupData);
+    console.log("Sign Up Data:", signupData);
 
     if (
       !signupData.username ||
@@ -76,9 +76,9 @@ export default function AuthPage() {
       alert("password and confirmPassword does not match");
       return;
     }
-    console.log("1 ");
+   
     try {
-      console.log("1 ");
+      
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`, {
         method: "POST",
         headers: {
@@ -89,7 +89,6 @@ export default function AuthPage() {
           password: signinData.password,
         }),
       });
-      console.log("2 ");
 
       const data = await response.json();
 
