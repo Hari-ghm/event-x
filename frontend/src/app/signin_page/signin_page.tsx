@@ -61,7 +61,7 @@ export default function AuthPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Sign Up Data:", signupData);
+    console.log("Sign Up Datwswa:", signupData);
 
     if (
       !signupData.username ||
