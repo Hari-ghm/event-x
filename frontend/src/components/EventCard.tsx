@@ -11,8 +11,9 @@ interface EventCardProps {
   id: string;
   createdBy: string;
   username: string;
-  liked: boolean; // <-- added prop from parent
-  isOver: boolean; // <-- new prop for event over status
+  liked: boolean;
+  isOver: boolean;
+  organisor: string
 }
 
 export default function EventCard({
@@ -26,6 +27,7 @@ export default function EventCard({
   username,
   liked,
   isOver,
+  organisor
 }: EventCardProps): JSX.Element {
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -137,6 +139,7 @@ export default function EventCard({
       <div className="ml-4 flex flex-col justify-between">
         <div>
           <h2 className="text-lg font-semibold mb-1">{name}</h2>
+          <p className="text-gray-400 text-sm mb-1">{organisor}</p>
           <p className="text-gray-400 text-sm mb-1">{venue}</p>
           <p className="text-gray-400 text-sm mb-1">Fee: ₹{fee}</p>
           <p className="text-gray-400 text-sm">

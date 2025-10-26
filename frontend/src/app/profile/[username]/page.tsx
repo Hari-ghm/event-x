@@ -24,6 +24,7 @@ interface Event {
   createdBy: string;
   endDate: string;
   endTime: string;
+  organiser: string;
 }
 
 export default function ProfilePage() {
@@ -108,7 +109,7 @@ export default function ProfilePage() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/events/deleteEvent/${eventId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/deleteEvent/${eventId}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -274,6 +275,7 @@ export default function ProfilePage() {
                     username={username || ""}
                     liked={false}
                     isOver={isEventOver(event)}
+                    organisor={event.organiser}
                   />
                   <button
                     onClick={() => handleDeleteEvent(event._id)}

@@ -15,7 +15,8 @@ interface Event {
   endTime: string;
   fee: string;
   poster: string;
-  createdBy: string;
+  createdBy: string; // The user who created the event
+  organiser: string; // The actual event organiser
   isover: boolean;
 }
 
@@ -45,7 +46,7 @@ export default function Events() {
         const eventsData: Event[] = await eventsRes.json();
         const interestedData = await interestedRes.json();
 
-        // Sort events by startDate & startTime
+        // Sort events by start date and time
         eventsData.sort((a, b) => {
           const dateA = new Date(`${a.startDate}T${a.startTime}`);
           const dateB = new Date(`${b.startDate}T${b.startTime}`);
@@ -68,11 +69,11 @@ export default function Events() {
     router.push(`/create-event/${username}`);
   };
 
-  // Filter events by search term
+  // ✅ Filter by name, venue, category, createdBy, or organiser
   const filteredEvents = events.filter((event) =>
-    [event.name, event.venue, event.category].some((field) =>
-      field.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    [event.name, event.venue, event.category, event.createdBy, event.organiser]
+      .filter(Boolean)
+      .some((field) => field.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const isEventOver = (event: Event) => {
@@ -96,18 +97,18 @@ export default function Events() {
         EVENTS
       </h1>
 
-      {/* Search Input */}
+      {/* 🔍 Search Input */}
       <div className="mb-6 w-full max-w-6xl px-2 sm:px-0">
         <input
           type="text"
-          placeholder="Search events by name, venue or category..."
+          placeholder="Search events by name, venue, category, organiser, or creator..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full bg-gray-900 border border-gray-700 text-white px-4 py-3 sm:py-2 rounded-lg focus:outline-none focus:border-purple-500 text-sm sm:text-base"
         />
       </div>
 
-      {/* Events Grid */}
+      {/* 🎟️ Events Grid */}
       <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl w-full mb-8 sm:mb-10 px-2 sm:px-0">
         {filteredEvents.length > 0 ? (
           filteredEvents.map((event) => {
@@ -123,6 +124,7 @@ export default function Events() {
                 startDate={event.startDate}
                 poster={event.poster}
                 createdBy={event.createdBy}
+                organisor={event.organiser}
                 username={username || ""}
                 liked={liked}
                 isOver={over}
@@ -136,7 +138,7 @@ export default function Events() {
         )}
       </div>
 
-      {/* Create Event Button */}
+      {/* ➕ Create Event Button */}
       <button
         onClick={handleCreateEvent}
         className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 sm:px-8 rounded-xl transition-all duration-300 text-sm sm:text-base"

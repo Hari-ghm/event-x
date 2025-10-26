@@ -15,6 +15,7 @@ interface Event {
   fee: string;
   poster: string;
   createdBy: string;
+  organiser: string
 }
 
 export default function Favorites() {
@@ -96,7 +97,8 @@ export default function Favorites() {
               createdBy={event.createdBy}
               username={username || ""}
               liked={true} // always liked
-              isOver={isEventOver(event)} // pass boolean value
+              isOver={isEventOver(event)} 
+              organisor={event.organiser}// pass boolean value
             />
           ))
         ) : (
