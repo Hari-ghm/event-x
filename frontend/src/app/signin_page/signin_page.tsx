@@ -76,7 +76,7 @@ export default function AuthPage() {
       alert("password and confirmPassword does not match");
       return;
     }
-
+    console.log("1 ");
     try {
       console.log("1 ");
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`, {
