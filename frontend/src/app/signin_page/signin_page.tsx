@@ -16,7 +16,11 @@ export default function AuthPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!signinData.username || !signinData.password) {
+    // Strip whitespace from both ends of username and password
+    const trimmedUsername = signinData.username?.trim() || "";
+    const trimmedPassword = signinData.password?.trim() || "";
+
+    if (!trimmedUsername || !trimmedPassword) {
       alert("Please enter both username and password");
       return;
     }
@@ -30,8 +34,8 @@ export default function AuthPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: signinData.username,
-            password: signinData.password,
+            username: trimmedUsername,
+            password: trimmedPassword,
           }),
         }
       );
@@ -39,14 +43,14 @@ export default function AuthPage() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(` Signed in successfully as ${signinData.username}`);
+        alert(`Signed in successfully as ${trimmedUsername}`);
 
         // Optionally store token or user info:
         // localStorage.setItem("token", data.token);
 
-        router.push(`/home?username=${signinData.username}`);
+        router.push(`/home?username=${trimmedUsername}`);
       } else {
-        alert(` ${data.message || "Invalid credentials"}`);
+        alert(`${data.message || "Invalid credentials"}`);
       }
     } catch (error) {
       console.error("Error during sign in:", error);
