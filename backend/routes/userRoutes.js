@@ -22,14 +22,11 @@ router.post("/signup", async (req, res) => {
     }
 
     const newUser = new User({ username, password });
-    console.log("New user object:", newUser);
 
     await newUser.save();
-    console.log("User saved successfully");
+  
     res.status(201).json({ message: "User created successfully" });
   } catch (err) {
-    console.error("Full error:", err);
-    console.error("Error name:", err.name);
     console.error("Error code:", err.code);
     res
       .status(500)
