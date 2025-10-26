@@ -6,20 +6,31 @@ const router = express.Router();
 // Signup
 router.post("/signup", async (req, res) => {
   try {
-    const { username, password} = req.body;
-    console.log(username,password,"ef")
+    const { username, password } = req.body;
+    console.log("Received:", username, password);
+
+    // Check if fields are provided
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Username and password are required" });
+    }
 
     const existingUser = await User.findOne({ username });
-  
-    if (existingUser)
+    if (existingUser) {
       return res.status(400).json({ message: "Username already exists" });
-      
+    }
 
-    const newUser = new User({ username, password});
-    
+    const newUser = new User({ username, password });
+    console.log("New user object:", newUser);
+
     await newUser.save();
+    console.log("User saved successfully");
     res.status(201).json({ message: "User created successfully" });
   } catch (err) {
+    console.error("Full error:", err);
+    console.error("Error name:", err.name);
+    console.error("Error code:", err.code);
     res
       .status(500)
       .json({ message: "Error creating user", error: err.message });
