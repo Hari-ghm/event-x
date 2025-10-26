@@ -85,8 +85,8 @@ export default function AuthPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: signinData.username,
-          password: signinData.password,
+          username: signupData.username,
+          password: signupData.password,
         }),
       });
 
