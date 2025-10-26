@@ -58,45 +58,51 @@ export default function AuthPage() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !signupData.username ||
-      !signupData.password ||
-      !signupData.confirmPassword
-    ) {
-      alert("Please enter username, password, confirm password");
+    const username = signupData.username;
+
+    // Check for empty fields
+    if (!username || !signupData.password || !signupData.confirmPassword) {
+      alert("Please enter username, password, and confirm password");
       return;
     }
 
-    if (signupData.password !== signupData.confirmPassword) {
-      alert("password and confirmPassword does not match");
+    // ❌ Disallow spaces in username
+    if (/\s/.test(username)) {
+      alert("Username should not contain spaces");
       return;
     }
-   
+
+    // Check password match
+    if (signupData.password !== signupData.confirmPassword) {
+      alert("Password and confirm password do not match");
+      return;
+    }
+
     try {
-      
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: signupData.username,
-          password: signupData.password,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password: signupData.password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        alert(` Signed in successfully as ${data.username}`);
-
-        // Optionally store token or user info:
+        alert(` Signed up successfully as ${username}`);
         localStorage.setItem("token", data.token);
       } else {
         alert(` ${data.message || "Invalid credentials"}`);
       }
     } catch (error) {
-      console.error("Error during sign in:", error);
+      console.error("Error during sign up:", error);
       alert("Something went wrong. Please try again later.");
     }
   };
