@@ -81,7 +81,7 @@ export default function EventCard({
   function viewEventDetails(event: React.MouseEvent<HTMLButtonElement>): void {
     event.stopPropagation();
     event.preventDefault();
-    const url = `/event/${id}/${createdBy}`;
+    const url = `/event/${id}/${username}`;
     if (typeof window !== "undefined") {
       window.location.href = url;
     }
