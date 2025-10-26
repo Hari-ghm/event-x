@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/app/navbar/navbar";
+import Image from "next/image";
 
 interface Event {
   _id: string;
@@ -181,7 +182,7 @@ export default function EventPage() {
         <div className="md:w-1/2 flex flex-col items-center justify-center bg-gray-900 rounded-2xl p-6 border border-gray-800 relative -mt-8">
           <div className="w-full aspect-[3/4] bg-gray-800 rounded-xl flex items-center justify-center overflow-hidden">
             {event.poster ? (
-              <img
+              <Image
                 src={event.poster}
                 alt="Event Poster"
                 className="object-cover w-full h-full"

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/app/navbar/navbar";
+import Image from "next/image";
 
 export default function CreateEventPage() {
   const params = useParams();
@@ -112,7 +113,7 @@ export default function CreateEventPage() {
         <div className="md:w-1/2 flex flex-col items-center justify-center bg-gray-900 rounded-2xl p-6 border border-gray-800">
           <div className="w-full aspect-[3/4] bg-gray-800 rounded-xl flex items-center justify-center overflow-hidden">
             {posterURL ? (
-              <img
+              <Image
                 src={posterURL}
                 alt="Event Poster"
                 className="object-cover w-full h-full"

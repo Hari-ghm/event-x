@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
+import Image from "next/image";
 
 interface NavbarProps {
   username?: string | null;
@@ -15,7 +16,7 @@ export default function Navbar({ username }: NavbarProps) {
       {/* Logo */}
       <div className="font-bold ">
         <Link href="/home?username=hxri">
-          <img
+          <Image
             src="/navbar-logo.png"
             alt="Brand Logo"
             className="h-16 md:h-20 w-auto cursor-pointer translate-y-4"

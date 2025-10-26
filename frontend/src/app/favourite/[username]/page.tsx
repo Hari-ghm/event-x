@@ -19,7 +19,6 @@ interface Event {
 }
 
 export default function Favorites() {
-  const router = useRouter();
   const params = useParams();
   const rawUsername = params.username;
   const username: string | null = Array.isArray(rawUsername)

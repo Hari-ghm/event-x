@@ -1,6 +1,7 @@
 "use client";
 import React, { JSX, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface EventCardProps {
   name: string;
@@ -129,7 +130,7 @@ export default function EventCard({
       </button>
 
       {/* Poster */}
-      <img
+      <Image
         src={poster}
         alt={name}
         className="w-28 h-40 object-cover rounded-lg flex-shrink-0"
