@@ -70,6 +70,15 @@ app.post(
   }
 );
 
+app.post("/uploadPoster", upload.single("poster"), (req, res) => {
+  try {
+    res.json({ imageUrl: req.file.path });
+  } catch (error) {
+    res.status(500).json({ error: "Upload failed" });
+  }
+});
+
+
 // Default route
 app.get("/", (req, res) => res.send("Backend is running 🚀"));
 
