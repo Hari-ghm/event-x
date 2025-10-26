@@ -66,13 +66,7 @@ export default function EventCard({
         throw new Error(text || "Failed to update interested list");
       }
 
-      console.log(
-        isLiked
-          ? "Event removed from interested list"
-          : "Event added to interested list"
-      );
     } catch (err) {
-      console.error("Error updating interested event:", err);
       // revert if failed
       setIsLiked((prev) => !prev);
     }

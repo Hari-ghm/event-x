@@ -6,7 +6,6 @@ const router = express.Router();
 router.post("/userfeedback", async (req, res) => {
   try {
     const { username, message } = req.body;
-    console.log(req.body)
 
     // Basic validation
     if (!username || !message) {

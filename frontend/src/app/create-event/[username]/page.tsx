@@ -88,14 +88,14 @@ export default function CreateEventPage() {
       });
 
       if (res.ok) {
-        alert("✅ Event created successfully!");
+        alert("Event created successfully!");
         // optional: clear inputs
       } else {
-        alert("❌ Failed to create event");
+        alert(" Failed to create event");
       }
     } catch (err) {
       console.error("Error:", err);
-      alert("❌ Something went wrong");
+      alert("Something went wrong");
     }
   };
   

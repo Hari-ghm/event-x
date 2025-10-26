@@ -16,8 +16,6 @@ export default function AuthPage() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Sign In Data:", signinData);
-
     if (!signinData.username || !signinData.password) {
       alert("Please enter both username and password");
       return;
@@ -42,14 +40,13 @@ export default function AuthPage() {
 
       if (response.ok) {
         alert(` Signed in successfully as ${signinData.username}`);
-        console.log("User:", data);
 
         // Optionally store token or user info:
         // localStorage.setItem("token", data.token);
 
         router.push(`/home?username=${signinData.username}`);
       } else {
-        alert(`❌ ${data.message || "Invalid credentials"}`);
+        alert(` ${data.message || "Invalid credentials"}`);
       }
     } catch (error) {
       console.error("Error during sign in:", error);
@@ -60,8 +57,6 @@ export default function AuthPage() {
   // Handle Sign Up
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log("Sign Up Data:", signupData);
 
     if (
       !signupData.username ||
@@ -93,12 +88,12 @@ export default function AuthPage() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(`✅ Signed in successfully as ${data.username}`);
-        console.log("User:", data);
+        alert(` Signed in successfully as ${data.username}`);
+
         // Optionally store token or user info:
         localStorage.setItem("token", data.token);
       } else {
-        alert(`❌ ${data.message || "Invalid credentials"}`);
+        alert(` ${data.message || "Invalid credentials"}`);
       }
     } catch (error) {
       console.error("Error during sign in:", error);
