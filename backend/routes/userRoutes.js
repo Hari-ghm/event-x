@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/signup", async (req, res) => {
   try {
     const { username, password} = req.body;
+    console.log("wef")
 
     const existingUser = await User.findOne({ username });
   
@@ -29,7 +30,7 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
   try {
     const { username, password } = req.body;
-  
+    
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -96,7 +97,6 @@ router.post("/addInterested", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     
-    console.log("QR")
     // Check if already interested
     if (user.interested.includes(eventId)) {
       return res

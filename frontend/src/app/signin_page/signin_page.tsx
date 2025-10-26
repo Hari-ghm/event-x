@@ -78,6 +78,7 @@ export default function AuthPage() {
     }
 
     try {
+      console.log("1 ");
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`, {
         method: "POST",
         headers: {
@@ -88,6 +89,7 @@ export default function AuthPage() {
           password: signinData.password,
         }),
       });
+      console.log("2 ");
 
       const data = await response.json();
 
