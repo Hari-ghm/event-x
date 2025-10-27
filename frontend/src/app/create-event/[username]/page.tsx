@@ -240,7 +240,7 @@ export default function CreateEventPage() {
 
           <p>
             🧑‍💼{" "}
-            <span className="text-purple-400 font-semibold">Organisers:</span>{" "}
+            <span className="text-purple-400 font-semibold">Organisers (club name) : </span>{" "}
             <input
               type="text"
               value={organiser}
